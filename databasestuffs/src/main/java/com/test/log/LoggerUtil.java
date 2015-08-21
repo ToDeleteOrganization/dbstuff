@@ -13,3 +13,4 @@ public class LoggerUtil {
 }
 
 // for the third commit
+// the sixth commit (3-6 commit was in another branch)
