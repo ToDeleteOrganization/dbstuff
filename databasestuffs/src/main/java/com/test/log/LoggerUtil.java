@@ -5,8 +5,8 @@ import java.io.IOException;
 public class LoggerUtil {
 
 	public static void logError(IOException e, String string) {
-		// TODO Auto-generated method stub
-		
+		// TODO: change it to log, not print
+		System.out.println(e.getMessage() + ", " + string);
 	}
 
 	
