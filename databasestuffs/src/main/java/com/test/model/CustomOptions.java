@@ -12,6 +12,7 @@ public class CustomOptions extends Options {
 		System.out.println("try 3");
 		System.out.println("try 4");
 		System.out.println("try 5");
+		System.out.println("try 6");
 	}
 	
 }
