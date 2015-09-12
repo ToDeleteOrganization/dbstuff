@@ -10,6 +10,7 @@ public class CustomOptions extends Options {
 		System.out.println("add options");
 		System.out.println("try 2");
 		System.out.println("try 3");
+		System.out.println("try 4");
 	}
 	
 }
