@@ -8,6 +8,7 @@ public class CustomOptions extends Options {
 
 	public void addOptions(Options optionsToAdd) {
 		System.out.println("add options");
+		System.out.println("try 2");
 	}
 	
 }
