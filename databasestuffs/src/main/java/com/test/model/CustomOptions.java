@@ -7,9 +7,7 @@ import org.apache.commons.cli.Options;
 public class CustomOptions extends Options {
 
 	public void addOptions(Options optionsToAdd) {
-		OptionGroup og = new OptionGroup();
-		optionsToAdd.getOptions().iterator()
-		
+		System.out.println("add options");
 	}
 	
 }
