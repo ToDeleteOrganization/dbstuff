@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+// This is a comment to push from Intellij
 public class ClassLoaderProperties extends PropertiesManager {
 
 	public ClassLoaderProperties(String fileName) {
