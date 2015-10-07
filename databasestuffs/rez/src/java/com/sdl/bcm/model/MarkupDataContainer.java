@@ -41,6 +41,7 @@ public abstract class MarkupDataContainer extends MarkupData {
         if(children == null) {
             setChildren(new LinkedList<MarkupData>());
         }
+        child.setParent(this);
         children.add(child);
     }
 
@@ -64,9 +65,21 @@ public abstract class MarkupDataContainer extends MarkupData {
     protected void cloneChildrenInto(MetaData clone) {
     	MarkupDataContainer markupDataContainer = convertType(clone);
     	if (markupDataContainer != null) {
-    		Utils.deepCloneList(children);
+    		List<MarkupData> clonedChildren = Utils.deepCloneList(children);
+    		addParentToChildren(clonedChildren, markupDataContainer);
+    		markupDataContainer.setChildren(clonedChildren);
     	}
     }
+
+	private void addParentToChildren(List<MarkupData> children, MarkupDataContainer parent) {
+		for (MarkupData md : children) {
+			md.setParent(parent);
+			if (md instanceof MarkupDataContainer) {
+				MarkupDataContainer mdc = (MarkupDataContainer)md;
+				addParentToChildren(mdc.getChildren(), mdc);
+			}
+		}
+	}
 
 	@Override
     public boolean deepEquals(Object o) {

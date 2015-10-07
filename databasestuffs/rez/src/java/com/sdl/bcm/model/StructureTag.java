@@ -3,8 +3,10 @@ package com.sdl.bcm.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sdl.bcm.ISkeletonItemReference;
+import com.sdl.bcm.model.fileskeleton.FileSkeleton;
 import com.sdl.bcm.model.fileskeleton.StructureTagDefinition;
 import com.sdl.bcm.visitor.BCMVisitor;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import java.util.LinkedList;
@@ -91,10 +93,14 @@ public class StructureTag extends MarkupData implements ISkeletonItemReference<S
                 .isEquals();
     }
 
-	@Override
+    @Override
 	public StructureTagDefinition getSkeletonDefinition() {
-		List<StructureTagDefinition> structTagDefinitions = super.getFileSkeleton().getStructureTagDefinitions();
-		return new FileReferenceFinder<StructureTagDefinition>(structTagDefinitions, getStructureTagDefinitionId()).find();
+    	StructureTagDefinition structTag = null;
+    	FileSkeleton fileSkeleton = super.getFileSkeleton();
+    	if (fileSkeleton != null) {
+    		structTag = new FileReferenceFinder<StructureTagDefinition>(fileSkeleton.getStructureTagDefinitions(), getStructureTagDefinitionId()).find();
+    	}
+		return structTag;
 	}
 
     @Override

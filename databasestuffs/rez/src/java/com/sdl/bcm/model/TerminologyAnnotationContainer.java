@@ -1,11 +1,10 @@
 package com.sdl.bcm.model;
 
 import com.sdl.bcm.ISkeletonItemReference;
+import com.sdl.bcm.model.fileskeleton.FileSkeleton;
 import com.sdl.bcm.model.fileskeleton.TerminologyData;
 import com.sdl.bcm.visitor.BCMElement;
 import com.sdl.bcm.visitor.BCMVisitor;
-
-import java.util.List;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
@@ -73,8 +72,12 @@ public class TerminologyAnnotationContainer extends AnnotationContainer implemen
 
     @Override
 	public TerminologyData getSkeletonDefinition() {
-		List<TerminologyData> placeTagDef = super.getFileSkeleton().getTerminologyData();
-		return new FileReferenceFinder<TerminologyData>(placeTagDef, getTerminologyDataId()).find();
+    	TerminologyData termData = null;
+    	FileSkeleton fileSkeleton = super.getFileSkeleton();
+    	if (fileSkeleton != null) {
+    		termData = new FileReferenceFinder<TerminologyData>(fileSkeleton.getTerminologyData(), getTerminologyDataId()).find();
+    	}
+		return termData;
 	}
 
     @Override

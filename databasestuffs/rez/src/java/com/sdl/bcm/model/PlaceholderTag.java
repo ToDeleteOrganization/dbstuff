@@ -3,8 +3,10 @@ package com.sdl.bcm.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sdl.bcm.ISkeletonItemReference;
+import com.sdl.bcm.model.fileskeleton.FileSkeleton;
 import com.sdl.bcm.model.fileskeleton.PlaceholderTagDefinition;
 import com.sdl.bcm.visitor.BCMVisitor;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import java.util.LinkedList;
@@ -70,8 +72,12 @@ public class PlaceholderTag extends MarkupData implements ISkeletonItemReference
 
     @Override
 	public PlaceholderTagDefinition getSkeletonDefinition() {
-		List<PlaceholderTagDefinition> placeTagDef = super.getFileSkeleton().getPlaceholderTagDefinitions();
-		return new FileReferenceFinder<PlaceholderTagDefinition>(placeTagDef, getPlaceholderTagDefinitionId()).find();
+    	PlaceholderTagDefinition placeHoldTag = null;
+    	FileSkeleton fileSkeleton = super.getFileSkeleton();
+    	if (fileSkeleton != null) {
+    		placeHoldTag = new FileReferenceFinder<PlaceholderTagDefinition>(fileSkeleton.getPlaceholderTagDefinitions(), getPlaceholderTagDefinitionId()).find();
+    	}
+		return placeHoldTag;
 	}
 
     /**

@@ -95,6 +95,12 @@ public abstract class MarkupData extends MetaData implements BCMCompositeElement
     	return (paragraphUnit != null) ? paragraphUnit.getParent() : null;
     }
 
+
+    protected FileSkeleton getFileSkeleton() {
+    	File parentFile = getParentFile();
+    	return (parentFile != null) ? parentFile.getSkeleton() : null;
+    }
+
     /**
      * Searches for it's parent <i>Document</i> through it's <i>File</i> parent.
      * <br />
@@ -128,15 +134,6 @@ public abstract class MarkupData extends MetaData implements BCMCompositeElement
     			markupData.setParagraphUnit(parentParagraphUnit);
     		}
     	}
-    }
-
-    protected FileSkeleton getFileSkeleton() {
-    	FileSkeleton fileSkeleton = null;
-    	File parentFile = getParentFile();
-    	if (parentFile != null) {
-    		fileSkeleton = parentFile.getSkeleton();
-    	}
-    	return fileSkeleton;
     }
 
     /**

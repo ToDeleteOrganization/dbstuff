@@ -8,6 +8,7 @@ import com.sdl.bcm.visitor.BCMCompositeElement;
 import com.sdl.bcm.visitor.BCMElement;
 import com.sdl.bcm.visitor.BCMVisitor;
 import com.sdl.bcm.visitor.impl.GetSegmentsVisitor;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.springframework.data.annotation.Id;
 
@@ -232,9 +233,18 @@ public class Document extends MetaData implements BCMCompositeElement<Document, 
 	public Document deepClone() {
 		Document clonedDoc = new Document();
 		copyPropertiesTo(clonedDoc);
-		clonedDoc.files = Utils.deepCloneList(files); // TODO: create a setter
+		clonedDoc.files = cloneFiles(clonedDoc);// TODO: create a setter
 		return clonedDoc;
 	}
+
+	private List<File> cloneFiles(Document parentdoc) {
+		List<File> clonedFiles = Utils.deepCloneList(files);
+		for (File file : clonedFiles) {
+			file.setParentDocument(parentdoc);
+		}
+		return clonedFiles;
+	}
+
 
 	@Override
 	public void copyPropertiesTo(MetaData clone) {

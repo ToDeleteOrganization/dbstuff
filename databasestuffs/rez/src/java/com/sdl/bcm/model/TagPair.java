@@ -1,10 +1,9 @@
 package com.sdl.bcm.model;
 
 import com.sdl.bcm.ISkeletonItemReference;
+import com.sdl.bcm.model.fileskeleton.FileSkeleton;
 import com.sdl.bcm.model.fileskeleton.TagPairDefinition;
 import com.sdl.bcm.visitor.BCMVisitor;
-
-import java.util.List;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
@@ -92,10 +91,14 @@ public class TagPair extends MarkupDataContainer implements ISkeletonItemReferen
         return visitor.visitLeave(this);
     }
 
-	@Override
+    @Override
 	public TagPairDefinition getSkeletonDefinition() {
-		List<TagPairDefinition> tagPairDefinitions = super.getFileSkeleton().getTagPairDefinitions();
-		return new FileReferenceFinder<TagPairDefinition>(tagPairDefinitions, getTagPairDefinitionId()).find();
+    	TagPairDefinition tagPairDef = null;
+    	FileSkeleton fileSkeleton = super.getFileSkeleton();
+    	if (fileSkeleton != null) {
+    		tagPairDef = new FileReferenceFinder<TagPairDefinition>(fileSkeleton.getTagPairDefinitions(), getTagPairDefinitionId()).find();
+    	}
+		return tagPairDef;
 	}
 
 	@Override

@@ -89,7 +89,7 @@ public class RevisionContainer extends MarkupDataContainer {
     	cloneChildrenInto(rc);
     	return rc;
     }
-    
+
     @Override
     public boolean accept(BCMVisitor visitor) {
         if (visitor.visitEnter(this)) {

@@ -2,10 +2,9 @@ package com.sdl.bcm.model;
 
 import com.sdl.bcm.ISkeletonItemReference;
 import com.sdl.bcm.model.fileskeleton.CommentDefinition;
+import com.sdl.bcm.model.fileskeleton.FileSkeleton;
 import com.sdl.bcm.visitor.BCMElement;
 import com.sdl.bcm.visitor.BCMVisitor;
-
-import java.util.List;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -68,8 +67,12 @@ public class CommentContainer extends AnnotationContainer implements ISkeletonIt
 
     @Override
 	public CommentDefinition getSkeletonDefinition() {
-		List<CommentDefinition> placeTagDef = super.getFileSkeleton().getCommentDefinitions();
-		return new FileReferenceFinder<CommentDefinition>(placeTagDef, getCommentDefinitionId()).find();
+    	CommentDefinition commentDef = null;
+    	FileSkeleton fileSkeleton = super.getFileSkeleton();
+    	if (fileSkeleton != null) {
+    		commentDef = new FileReferenceFinder<CommentDefinition>(fileSkeleton.getCommentDefinitions(), getCommentDefinitionId()).find();
+    	}
+		return commentDef;
 	}
 
     @Override

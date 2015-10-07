@@ -57,10 +57,10 @@ public class FormattingGroup extends AbstractSkeletonItem {
     }
 
     @Override
-    public ContextDefinition deepClone() {
-    	ContextDefinition contextDefinition = new ContextDefinition();
-    	copyPropertiesTo(contextDefinition);
-    	return contextDefinition;
+    public FormattingGroup deepClone() {
+    	FormattingGroup formattingGroup = new FormattingGroup();
+    	copyPropertiesTo(formattingGroup);
+    	return formattingGroup;
     }
 
     @Override

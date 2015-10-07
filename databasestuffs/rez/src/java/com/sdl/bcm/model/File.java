@@ -10,8 +10,6 @@ import com.sdl.bcm.visitor.BCMCompositeElement;
 import com.sdl.bcm.visitor.BCMElement;
 import com.sdl.bcm.visitor.BCMVisitor;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.springframework.data.annotation.Transient;
 
@@ -290,17 +288,24 @@ public class File extends MetaData implements BCMCompositeElement<Document, Para
 			file.setFileTypeDefinitionId(fileTypeDefinitionId);
 			file.setOriginalEncoding(originalEncoding);
 			file.setPreferredTargetEncoding(preferredTargetEncoding);
-			file.setSkeleton(skeleton.deepClone());
-			if (!regularParagraphUnits.isEmpty()) {
+
+			if (skeleton != null) {
+				file.setSkeleton(skeleton.deepClone());
+			}
+
+			if (regularParagraphUnits != null) {
 				file.regularParagraphUnits = new LinkedList<>(regularParagraphUnits);
 			}
-			if (!MapUtils.isEmpty(paragraphUnitsMap)) {
+
+			if (paragraphUnitsMap != null) {
 				file.paragraphUnitsMap = new ConcurrentHashMap<>(paragraphUnitsMap);
 			}
-			if (!CollectionUtils.isEmpty(dependencyFiles)) {
+
+			if (dependencyFiles != null) {
 				file.setDependencyFiles(Utils.deepCloneList(dependencyFiles));
 			}
-			if (!CollectionUtils.isEmpty(commentDefinitionIds)) {
+
+			if (commentDefinitionIds != null) {
 				file.commentDefinitionIds = new LinkedList<>(commentDefinitionIds);
 			}
 		}
@@ -310,11 +315,19 @@ public class File extends MetaData implements BCMCompositeElement<Document, Para
     public File deepClone() {
     	File file = new File(parentDocument);
     	copyPropertiesTo(file);
-    	file.paragraphUnits = Utils.deepCloneList(paragraphUnits);
+    	file.paragraphUnits = cloneParagraphUnits(file);
     	return file;
     }
 
-    @Override
+	private List<ParagraphUnit> cloneParagraphUnits(File file) {
+		List<ParagraphUnit> clonedPU = Utils.deepCloneList(paragraphUnits);
+		for (ParagraphUnit pu : paragraphUnits) {
+			pu.setParentFile(file);
+		}
+		return clonedPU;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if( ! super.equals(o))
             return false;
