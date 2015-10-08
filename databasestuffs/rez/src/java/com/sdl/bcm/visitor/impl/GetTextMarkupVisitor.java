@@ -7,7 +7,7 @@ import com.sdl.bcm.visitor.BCMAbstractVisitor;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GetTextMarkupVisitor  extends BCMAbstractVisitor {
+public class GetTextMarkupVisitor extends BCMAbstractVisitor {
 
     /**
 	 * This list will be populated with all the text markup's as it traverses a tree structure.

@@ -7,6 +7,7 @@ import com.sdl.bcm.manager.Utils;
 import com.sdl.bcm.visitor.BCMCompositeElement;
 import com.sdl.bcm.visitor.BCMElement;
 import com.sdl.bcm.visitor.BCMVisitor;
+import com.sdl.bcm.visitor.FinderUtils;
 import com.sdl.bcm.visitor.impl.GetSegmentsVisitor;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -192,14 +193,12 @@ public class Document extends MetaData implements BCMCompositeElement<Document, 
     }
 
     /**
-     * Retrieves all the segments in the Source paragraphs of all ParagraphUnits in the file
+     * Retrieves all the segments in the Source paragraphs of all ParagraphUnits in all files
      * @return a list of all source Segment objects
      */
     @JsonIgnore
     public List<Segment> getSegments() {
-        GetSegmentsVisitor getSegmentsVisitor = new GetSegmentsVisitor();
-        this.accept(getSegmentsVisitor);
-        return getSegmentsVisitor.getSegmentsList();
+    	return FinderUtils.getSegmentsFrom(this);
     }
 
     /**
@@ -244,7 +243,6 @@ public class Document extends MetaData implements BCMCompositeElement<Document, 
 		}
 		return clonedFiles;
 	}
-
 
 	@Override
 	public void copyPropertiesTo(MetaData clone) {

@@ -1,11 +1,10 @@
 package com.sdl.bcm.model;
 
 import com.fasterxml.jackson.annotation.*;
-import com.sdl.bcm.ISkeletonItemReference.FileReferenceFinder;
-import com.sdl.bcm.model.fileskeleton.AbstractSkeletonItem;
 import com.sdl.bcm.model.fileskeleton.FileSkeleton;
 import com.sdl.bcm.visitor.BCMCompositeElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -61,6 +60,43 @@ public abstract class MarkupData extends MetaData implements BCMCompositeElement
     @JsonIgnore
     public String getKey() {
         return id;
+    }
+
+    /**
+     * Finds the direct reference of the paragraph this <i>MarkupData</i> belongs to. <br />
+     * If the markup it's the paragraph itself, an instance of itself will be returned.
+     * It will search it's parent starting from the markup reference.
+     * 
+     * <br />
+     * @return
+     * A direct reference of the parent paragraph for this <i>MarkupData</i>.
+     */
+    public Paragraph getParentParagraph() {
+    	MarkupData clonedParent = this;
+
+    	while ((clonedParent != null) && !Paragraph.TYPE.equals(clonedParent.getType())) { 
+    		clonedParent = clonedParent.getParent();
+    	}
+
+    	return (Paragraph)clonedParent;
+    }
+
+    /**
+     * Searches for a list with all parents of this markup. <br />
+     * First element will be the first parent, the second element the second parent etc..
+     * 
+     * @return
+     *  A list with all this element's parent.
+     */
+    public List<MarkupData> getAncestors() {
+    	List<MarkupData> markupDataParent = new ArrayList<MarkupData>();
+
+    	MarkupData mdParent = parent;
+    	while (mdParent != null) {
+    		markupDataParent.add(mdParent);
+    		mdParent = parent.getParent();
+    	}
+    	return markupDataParent;
     }
 
     /**
@@ -137,20 +173,6 @@ public abstract class MarkupData extends MetaData implements BCMCompositeElement
     }
 
     /**
-     * Finds the first element from a file skeleton specific items.
-     * 
-     * @param as
-     * @param id
-     * @return
-     */
-	protected <T extends AbstractSkeletonItem> T findSkeletonItem(List<T> skeletonItems, Integer skelItemId) {
-		T skeletonItem = skeletonItems.stream().filter((skelItem) -> {
-			return (skelItem.getId() == skelItemId);
-		}).findFirst().get();
-		return skeletonItem;
-	}
-
-    /**
      * Clones this <i>MarkupData</i> without it's children (if it has any).
      * <br />
      * @return A clone of this element without it's children.
@@ -158,9 +180,11 @@ public abstract class MarkupData extends MetaData implements BCMCompositeElement
     // TODO: this should be moved in MarkupDataContainer
     public abstract MarkupData duplicateWithoutChildren();
 
-//    public MarkupData deepClone() {
-//    	return super.deepClone();
-//    }
+    public MarkupData deepClone() {
+    	MarkupData clone = duplicateWithoutChildren();
+    	copyPropertiesTo(clone);
+    	return clone;
+    }
 
     @Override
     public boolean equals(Object o) {

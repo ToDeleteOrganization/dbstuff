@@ -6,7 +6,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sdl.bcm.visitor.BCMVisitor;
-import com.sdl.bcm.visitor.impl.GetSegmentsVisitor;
+import com.sdl.bcm.visitor.FinderUtils;
 
 /**
  * Represents the contents of a paragraph unit in one language.
@@ -34,6 +34,7 @@ public class Paragraph extends MarkupDataContainer {
      * Updates a segment in this Paragraph with the new segment provided as parameter
      * The segment to be replaced is identified by the segmentNumber field of the parameter segment
      * If the segment number is not found, the structure is not changed
+     * 
      * @param segment the new segment to be updated in this paragraph
      */
     public void updateSegment(Segment segment) {
@@ -50,16 +51,14 @@ public class Paragraph extends MarkupDataContainer {
      * Retrieves all the segments in the Source paragraphs of all ParagraphUnits in the file
      * @return a list of all source Segment objects
      */
-    // TODO: this is present in the Document class as well, find a common place
     @JsonIgnore
     public List<Segment> getSegments() {
-    	GetSegmentsVisitor getSegmentsVisitor = new GetSegmentsVisitor();
-        this.accept(getSegmentsVisitor);  //maybe use getChildren instead of a visitor here? it might be more efficient
-        return getSegmentsVisitor.getSegmentsList();
+    	// maybe use getChildren instead of a visitor here? it might be more efficient
+    	return FinderUtils.getSegmentsFrom(this);
     }
 
     @Override
-    public MarkupDataContainer duplicateWithoutChildren() {
+    public Paragraph duplicateWithoutChildren() {
         Paragraph clone = new Paragraph(parentParagraphUnit);
         super.copyPropertiesTo(clone);
         return clone;
@@ -79,8 +78,12 @@ public class Paragraph extends MarkupDataContainer {
 
     @Override
     public Paragraph deepClone() {
-    	Paragraph paragraph = new Paragraph(getParagraphUnit());
+    	Paragraph paragraph = duplicateWithoutChildren();
     	super.cloneChildrenInto(paragraph);
     	return paragraph;
+    }
+
+    public String toString() {
+    	return "Paragraph [id = " + id + "]";
     }
 }

@@ -16,7 +16,13 @@ public interface ISkeletonItemReference<T extends AbstractSkeletonItem> {
 	@JsonIgnore
 	T getSkeletonDefinition();
 
-	// by default static
+	/**
+	 * Inner class specific used to find an AbstractSkeletonItem in the context of a SkeletonItemReference.
+	 * 
+	 * @author mariuscocoi
+	 *
+	 * @param <Q> The skeleton item (definition).
+	 */
 	class FileReferenceFinder<Q extends AbstractSkeletonItem> {
 		private Integer definitionId;
 		
@@ -32,11 +38,13 @@ public interface ISkeletonItemReference<T extends AbstractSkeletonItem> {
 				return null;
 			}
 
-			// if we have an id and definitions, search for the first def with that id.
-			Q skeletonItem = definitions.stream().filter((skelItem) -> {
-				return (skelItem.getId() == definitionId);
-			}).findFirst().get();;
-			
+			Q skeletonItem = null;
+			for (Q absSkeletonItem : definitions) {
+				if (absSkeletonItem.getId() == definitionId) {
+					skeletonItem = absSkeletonItem;
+					break;
+				}
+			}
 			return skeletonItem;
 		}
 	}

@@ -69,10 +69,15 @@ public abstract class MetaData implements BCMElement, Serializable {
 
     @SuppressWarnings("unchecked")
 	protected <T extends MetaData> T convertType(MetaData metaData) {
-    	if (metaData != null) {
-    		return (T)metaData;
+    	if (metaData == null) {
+    		throw new NullPointerException("Please provide a referenced argument, not a null one.");
     	}
-    	return null;
+
+    	if (getClass() != metaData.getClass()) {
+    		throw new ClassCastException("You need to pass a " + getClass().getName() + " argument, not a " + metaData.getClass().getName());
+    	}
+
+    	return (T)metaData;
     }
 
     @Override

@@ -273,10 +273,10 @@ public class ParagraphUnit extends MetaData implements BCMCompositeElement<File,
     		pu.setLocked(isLocked);
     		pu.setContextId(contextId);
     		pu.setStructureContextId(structureContextId);
-    		if (!CollectionUtils.isEmpty(contextList)) {
+    		if (contextList != null) {
     			pu.setContextList(new ArrayList<>(contextList));
     		}
-    		if (!CollectionUtils.isEmpty(commentDefinitionIds)) {
+    		if (commentDefinitionIds != null) {
     			pu.setContextList(new ArrayList<>(commentDefinitionIds));
     		}
     	}

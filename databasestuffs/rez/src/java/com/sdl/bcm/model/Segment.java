@@ -10,6 +10,7 @@ import com.sdl.bcm.visitor.TerminologyProcessor;
 import com.sdl.bcm.visitor.VisitorException;
 import com.sdl.bcm.visitor.impl.ExtractPlainTextVisitor;
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * A Segment stands for a list of text and markups
@@ -296,5 +297,21 @@ public class Segment extends MarkupDataContainer {
         result = 31 * result + (segmentNumber != null ? segmentNumber.hashCode() : 0);
         result = 31 * result + (translationOrigin != null ? translationOrigin.hashCode() : 0);
         return result;
+    }
+
+    public String toString() {
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("Segment[");
+    	if (confirmationLevel != null) {
+    		builder.append("confirmationLevel=" + confirmationLevel.name() + ", ");
+    	}
+    	if (translationOrigin != null) {
+    		builder.append("translationOrigin=" + translationOrigin + ", ");
+    	}
+    	builder.append("wordCount=" + wordCount + ", ");
+    	builder.append("characterCount=" + characterCount + ", ");
+    	builder.append("segmentNumber=" + segmentNumber);
+    	builder.append("]");
+    	return builder.toString();
     }
 }

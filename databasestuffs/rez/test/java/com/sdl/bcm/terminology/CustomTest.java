@@ -98,10 +98,30 @@ public class CustomTest extends AbstractVisitorsTest {
 	public void testSmth() throws JsonParseException, JsonMappingException, IOException {
 		Document doc = getBCMDocumentFromFile("testGetSegmentFromDocument.json");
 		
-		TagPair tagPair = (TagPair)doc.getChildren().get(0).getChildren().get(0).getSource().getChildren().get(0).getChildren().get(0);
-		System.out.println(tagPair);
+		ParagraphUnit pu = doc.getChildren().get(0).getChildren().get(0);
 		
+		Paragraph source = pu.getSource();
+		List<Segment> sourceSegments = source.getSegments();
+		System.out.println(sourceSegments);
+
+		Paragraph target = pu.getTarget();
+		List<Segment> targetSegments = target.getSegments();
+		System.out.println(targetSegments);
 		
+		Paragraph parParentPar = source.getParentParagraph();
+		System.out.println(parParentPar);
+		System.out.println(parParentPar.deepEquals(source));
+
+		Segment segment = (Segment)source.getChildren().get(0);
+		Paragraph segPar = segment.getParentParagraph();
+		System.out.println(segPar.deepEquals(source));
+		
+
+		TagPair tagPair = (TagPair)segment.getChildren().get(0);
+		Paragraph tagPar = tagPair.getParentParagraph();
+		System.out.println(tagPar.deepEquals(source));
+		
+
 		TagPair tp = tagPair.deepClone();
 		System.out.println(tp);
 		
@@ -109,12 +129,13 @@ public class CustomTest extends AbstractVisitorsTest {
 		System.out.println(tp == tagPair);
 		System.out.println(tp.getParent() == tagPair.getParent());
 
-
-//		System.out.println(tp == tagPair);
-//		System.out.println(tp.getParent() == tagPair.getParent());
-		
 	}
 
+	@Test
+	public void testSomething() throws JsonParseException, JsonMappingException, IOException {
+		
+	}
+	
 	@Override
 	public void log(String message) {
 		// TODO Auto-generated method stub

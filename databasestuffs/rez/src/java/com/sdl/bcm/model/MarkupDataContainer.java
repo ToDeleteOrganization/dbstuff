@@ -28,6 +28,14 @@ public abstract class MarkupDataContainer extends MarkupData {
         return children;
     }
 
+    public List<MarkupData> getAllChildren() {
+    	return null;
+    }
+
+    public List<MarkupData> getAllChildrenOfType() {
+    	return null;
+    }
+
     @JsonIgnore
     public List<MarkupData> getACopyOfChildrenList() {
         return new LinkedList<>(getChildren());
