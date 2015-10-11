@@ -2,3 +2,5 @@
 - extrage elementul (adica textmarkup) de la un anumit index in text
 - split an element after an index
 - insert/remove after/before an element
+
+- test pt. skeletonItem getDefinition
