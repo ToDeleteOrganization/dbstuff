@@ -1,8 +1,11 @@
 - extrage elementul (adica textmarkup) de la un anumit index in text - DONE
 
 - add a contains children method - DONE
-- insert/remove after/before an element
+- insert/remove after/before an element - DONE (test remove)
 
 - split an element after an index
+- getChildrenOfType
 
 - test pt. skeletonItem getDefinition
+
+- Contains face pe equals nu pe deep equals... nu poate face prob. pe viitor asta?
