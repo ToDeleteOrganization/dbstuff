@@ -1,10 +1,12 @@
 - extrage elementul (adica textmarkup) de la un anumit index in text - DONE
 
 - add a contains children method - DONE
-- insert/remove after/before an element - DONE (test remove)
+- insert/remove after/before an element - DONE
 
-- split an element after an index
+
 - getChildrenOfType
+- split an element after an index
+
 
 - test pt. skeletonItem getDefinition
 
