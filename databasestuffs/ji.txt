@@ -1,0 +1,60 @@
+Provide functionality required for Machine translation of the content.
+CoA:
+visitor
+method for getting plain text - review segment.getText()
+functionality for populating target content (content and all necessary properties changes - translationorigin, etc.)
+functionality for copying/cloning tags
+functionality for adding extra tags
+Note - look on how we can build the API documentation automatically - similar to Sandcastle for .NET projects
+
+
+Current logs that have a trace id:
+2015-10-16 08:08:13 INFO WebContext:40 - /bcm/fullDocument - TR_ID : 5d764265-3f0f-4782-a41c-4c3405638088
+2015-10-16 08:08:13 INFO StatisticsLogger:26 - addDocument adding document with ID c448fb7c-ecb8-4c02-91e8-857a71aa4c5c took 0.021 seconds. Trace Id: 5d764265-3f0f-4782-a41c-4c3405638088
+2015-10-16 08:08:13 INFO StatisticsLogger:26 - addDocument building response with ID c448fb7c-ecb8-4c02-91e8-857a71aa4c5c took 0.021 seconds. Trace Id: 5d764265-3f0f-4782-a41c-4c3405638088
+Trace Id and TR_ID mean the same think but they should also use the same string.
+Also update the logstash filter to parse that Trace Id into the "traceId" field for Graylog.
+Current filter on machine cljeng-lc-log01 and file /etc/logstash/conf.d/logstash-bcm.conf
+filter {
+grok {
+match => {
+"message" => "%
+{SYSLOGTIMESTAMP:syslog_timestamp}
+%
+{SYSLOGHOST:host}
+%
+{DATA:type}
+(?<syslog_escape>(#\d
+{3}
+)?)%
+{GREEDYDATA:message}
+"
+}
+overwrite => ["host", "type", "message"]
+remove_field => ["syslog_escape"]
+}
+multiline {
+pattern => "^%
+{TIMESTAMP_ISO8601:api_timestamp}
+"
+negate => true
+what => previous
+enable_flush => true
+}
+grok {
+match => {
+"message" => "%
+{TIMESTAMP_ISO8601:api_timestamp}
+%
+{LOGLEVEL:loglevel}
+%
+{DATA:file}
+:%
+{NUMBER:line}
+-"
+}
+}
+date
+{ match => ["api_timestamp", "YYYY-MM-dd HH:mm:ss,SSS", "YYYY-MM-dd HH:mm:ss", "ISO8601"] timezone => "UTC" target => "@timestamp" add_tag => ["tmatch"] }
+}
+Central logging machines in configuration management needs to be updated on both master and San Jose branches.
