@@ -1,0 +1,147 @@
+{
+	"type": "segment",
+	"children": [{
+		"type": "text",
+		"text": "To see "
+	},
+	{
+		"type": "tagPair",
+		"id": "6428f90d-7358-4e50-895f-9e99becb8f34",
+		"children": [{
+			"type": "text",
+			"text": "all "
+		},
+		{
+			"type": "tagPair",
+			"id": "7f2fe238-12c2-45d3-a937-f00766baa875",
+			"children": [{
+				"type": "text",
+				"text": "letters in alphabet, "
+			},
+			{
+				"type": "tagPair",
+				"id": "6f8b6d78-28dc-49ef-a533-932e7bcc0d9d",
+				"children": [{
+					"type": "text",
+					"text": "one must use the following sentence: "
+				}],
+				"tagPairDefinitionId": 0,
+				"canHide": false
+			}],
+			"tagPairDefinitionId": 0,
+			"canHide": false
+		}],
+		"tagPairDefinitionId": 0,
+		"canHide": false
+	},
+	{
+		"type": "terminology",
+		"id": "f0934ba4-3012-4eb9-a52e-208b4f4d6a0c",
+		"children": [{
+			"type": "tagPair",
+			"metadata": {
+				"SDL:AutoCloned": "true"
+			},
+			"id": "bc65f729-064e-430b-a008-fe9012a86415",
+			"children": [{
+				"type": "tagPair",
+				"metadata": {
+					"SDL:AutoCloned": "true"
+				},
+				"id": "df8ef25c-35b2-447f-ae2b-c3a252baa46f",
+				"children": [{
+					"type": "tagPair",
+					"metadata": {
+						"SDL:AutoCloned": "true"
+					},
+					"id": "c97e942f-6301-4843-bffc-0fc6bebf2fde",
+					"children": [{
+						"type": "text",
+						"text": "The "
+					}],
+					"tagPairDefinitionId": 0,
+					"canHide": false
+				},
+				{
+					"type": "text",
+					"text": "quick "
+				}],
+				"tagPairDefinitionId": 0,
+				"canHide": false
+			},
+			{
+				"type": "tagPair",
+				"id": "7156b94f-1239-4dd3-b88a-e16e33ee7e21",
+				"children": [{
+					"type": "text",
+					"text": "brown "
+				},
+				{
+					"type": "tagPair",
+					"id": "f3efa71b-ec0e-46ae-ad22-5726d3eb1dad",
+					"children": [{
+						"type": "text",
+						"text": "fox "
+					},
+					{
+						"type": "tagPair",
+						"id": "7d749a82-d734-406d-a4ff-833604b6a427",
+						"children": [{
+							"type": "text",
+							"text": "jumps "
+						}],
+						"tagPairDefinitionId": 0,
+						"canHide": false
+					}],
+					"tagPairDefinitionId": 0,
+					"canHide": false
+				},
+				{
+					"type": "text",
+					"text": "over "
+				}],
+				"tagPairDefinitionId": 0,
+				"canHide": false
+			},
+			{
+				"type": "text",
+				"text": "the "
+			}],
+			"tagPairDefinitionId": 0,
+			"canHide": false
+		},
+		{
+			"type": "tagPair",
+			"id": "bfb5457a-bf13-48ad-b356-d023193d2877",
+			"children": [{
+				"type": "text",
+				"text": "lazy "
+			},
+			{
+				"type": "tagPair",
+				"id": "a1cd7553-4270-43d8-98b4-32dc7c1ef5d9",
+				"children": [{
+					"type": "text",
+					"text": "sleepy "
+				}],
+				"tagPairDefinitionId": 0,
+				"canHide": false
+			}],
+			"tagPairDefinitionId": 0,
+			"canHide": false
+		},
+		{
+			"type": "text",
+			"text": "dog."
+		}],
+		"annotationId": 1,
+		"terminologyDataId": 1
+	},
+	{
+		"type": "text",
+		"text": " These are true wise words!"
+	}],
+	"wordCount": 0,
+	"characterCount": 0,
+	"isLocked": false
+}
