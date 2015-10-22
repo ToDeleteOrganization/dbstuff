@@ -11,3 +11,37 @@
 - test pt. skeletonItem getDefinition
 
 - Contains face pe equals nu pe deep equals... nu poate face prob. pe viitor asta?
+
+
+
+
+
+
+
+
+
+
+
+There are some utilities methods to perform a conversion between a BCMDocument and a JSON string (ex. from file):
+1. To convert from a JSON string to a BCM document you can use: 
+	Document document = BCMSerializer.deserializeBCM(jsonString);
+	
+	There is also a similar version that takes as a parameter an array of bytes, that represents the actul json bytes:
+	byte[] jsonByteArray = ....
+	Document document = BCMSerializer.deserializeBCM(jsonByteArray);
+	
+2. To convert from a BCM document to a JSON string, you can use:
+	String jsonDocument = BCMSerializer.serializeBCM(documentObject);
+	
+	We also have a similar method that can be used with any other BCM elements type (ex. paragraph, segment etc.). It takes as an argument an object
+	String segmentString = BCMSerializer.deserializeBCM(segmentObject);
+	
+	
+Model manipulation:
+	There are new ways of manipulating a model content with all kinds of elements for all kinds of containers. This is done with the help of insertXXX methods that are applicable to all kinds of markup data container elements:
+	Example: Suppose we have the segment object 'segment'. To modify it's structure we can use the following:
+	
+	 TagPair tagPair = new TagPair();
+	 tagPair.addMetadata();
+	 segment.insertContainer(new int[] {2}, new int[] {8}, tagPair);
+	
