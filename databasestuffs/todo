@@ -45,3 +45,73 @@ Model manipulation:
 	 tagPair.addMetadata();
 	 segment.insertContainer(new int[] {2}, new int[] {8}, tagPair);
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	BCM Model examples
+For example we have a segment that contains only the text: 'Simple testing text.'. Let's say we want to add a new TagPair container (based on the string text), on the testing word only. To insert a container (ex. TagPair) inside another container (ex. Segment), we must use the text offsets of the text we want to wrap, for example, for the testing word the offsets are 7 and 14;
+Since version 2.6 this can be achieved in the following manner:
+// We will programmatically create the above scenario
+Segment segment = new Segment();
+segment.addChild(new TextMarkup("Simple testing text.")); // add the simple text inside the segment
+  
+ 
+TagPair newTagPair = new TagPair();
+newTagPair.setTagPairDefinitionId(12); // skeleton tag pair definition
+try {
+    segment.insertContainer(new int[] {7}, new int[] {14}, newTagPair); // adds the new tag pair container between the given offsets.
+} catch (VisitorException e) {
+    logger.error(e.getMessage());
+}
+The JSON format of the above code sample will be (the output was trimed):
+ 
+Original Segment output
+1
+2
+3
+4
+5
+6
+7
+{
+    "type": "segment",
+    "children": [{
+        "type": "text",
+        "text": "Simple testing text."
+    }]
+}
+ 
+ 
+After the insertion
+{
+    "type": "segment",
+    "children": [{
+        "type": "text",
+        "text": "Simple "
+    },
+    {
+        "type": "tagPair",
+        "children": [{
+            "type": "text",
+            "text": "testing"
+        }],
+        "tagPairDefinitionId": 12,
+    },
+    {
+        "type": "text",
+        "text": " text."
+    }],
+}
+ 
+Conclusions:
+The tag pair container was inserted between the given offsets, splitting the initial text markup in three parts: the first and the third part are still direct children of the segment, while the second part (the text between the offsets) has become a child of the new container that was added.
