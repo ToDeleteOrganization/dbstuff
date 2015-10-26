@@ -115,3 +115,183 @@ After the insertion
  
 Conclusions:
 The tag pair container was inserted between the given offsets, splitting the initial text markup in three parts: the first and the third part are still direct children of the segment, while the second part (the text between the offsets) has become a child of the new container that was added.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+This page documents the results of the load tests ran on BCM Service . In order to write the tests and execute them, Visual Studio Load Testing was used together with the load testing infrastructure that we have in place. During the test runs, performance metrics were also gathered from the Virtual Machine hosting the BCM Service.
+Add Document
+The "Add Document" scenario is a simple one, with a single call being made to the service. The variations of this test are represented by the number of concurrent calls(user load), the number of iterations and the size(number of segments) of the document being uploaded. In analyzing the results, the most important metrics were the Average Response Time and the Transaction/sec(a transaction representing a call to the service and getting its response). These metrics are analyzed in different cases as follows:
+
+ Constant number of segments and users with 0 documents in the BCM and a set number of iterations(500-5000)
+Average Response Time(seconds)
+User Load\Segments
+10 users
+25
+50
+100
+Average
+Average % of processor used by process
+Average % of Memory in use on the VM
+100 segments	0.535	1.061	2.788	4.459	2.211	13	34
+500	1.477	3.646	6.300	12.761	6.046	14	37.5
+1000	3.269	7.473	13.629	27.428	12.950	13.5	40
+2500	5.174	16.707	36.202	76.678	33.690	-	40
+5000	11.999	30.213	43.888	47.001	33.275	-	40
+Average	4.491	11.820	20.562	33.665	17.634	13.5	38
+ 
+ 
+Transactions/second
+ 
+User Load\Segments
+10 users
+25
+50
+100
+Average
+100 segments	21.419	16.284	17.233	21.365	19.075
+500	5.900	6.354	7.417	7.219	6.723
+1000	2.716	3.109	3.461	3.406	3.173
+2500	1.627	1.375	1.302	1.242	1.387
+5000	0.728	0.760	1.046	1.215	0.937
+Average	6.478	5.576	6.092	6.889	6.259
+ 
+One document selected from a set with different segment counts(100,500,1000,2500 and 5000) and constant user load with 0 documents in the BCM
+Average Response Time(seconds)
+User Load
+10 users
+25
+50
+100
+Average
+Average % of processor used by process
+Average % of Memory in use on the VM
+MIxed segments	4.374	10.083	20.191	43.028	19.419	20	36
+Transactions/second
+User Load
+10 users
+25
+50
+100
+Average
+MIxed segments	1.968	2.323	2.352	2.221	2.216
+Fixed user load and fixed number of segments with increasing number of documents in the BCM and a run period of 15 minutes(previous result with predefined number of iterations added for comparison)
+Average Response Time(seconds)
+Number of documents in BCM
+0(previous result)
+0
+~30 000
+~55 000
+Average
+Average % of processor used by process
+Average % of Memory in use on the VM
+100 segments- 25 users	1.061	1.117	0.864	0.913	0.989	14	35
+Transactions/second
+Number of documents in BCM
+0(previous result)
+0
+~30 000
+~55 000
+Average
+100 segments- 25 users	21.419	21.582	27.563	26.105	24.167
+Get Document
+The "Get Document" scenario is a simple one, with a single call being made to the service. The variations of this test are represented by the number of concurrent calls(user load), the number of iterations and the size(number of segments) of the document being downloaded. In analyzing the results, the most important metrics were the Average Response Time and the Transaction/sec(a transaction representing a call to the service and getting its response). These metrics are analyzed in different cases as follows:
+ 
+Constant number of segments and users with 1200-6000 documents in the BCM(directly related to the iterations) and a set number of iterations(1000-5000)
+Average Response Time(seconds)
+User Load\Segments
+10 users
+25
+50
+100
+Average
+Average % of processor used by process
+Average % of Memory in use on the VM
+100 segments	0.277	0.433	0.653	1.517	0.720	28	35
+500	0.721	1.434	2.740	5.314	2.552	23.5	36.5
+1000	1.167	2.394	4.454	8.935	4.237	28	37.5
+2500	2.700	5.812	11.152	21.356	7.150	32	35
+5000	5.651	11.294	22.330	66.160	26.359	-	37
+Average	2.103	4.273	8.266	20.656	8.825	28	36
+ 
+ 
+Transactions/second
+ 
+User Load\Segments
+10 users
+25
+50
+100
+Average
+100 segments	30.773	51.012	68.070	61.846	52.925
+500	11.471	15.892	17.346	18.094	15.701
+1000	7.187	9.387	10.437	10.683	9.424
+2500	3.007	3.825	4.113	4.366	3.828
+5000	1.434	1.949	2.063	1.502	1.737
+Average	10.774	16.413	20.406	19.298	16.723
+One document downloaded from the server which contains a set of documents with different segment counts(100,500,1000,2500 and 5000). The user load is constant
+Average Response Time(seconds)
+User Load
+10 users
+25
+50
+100
+Average
+Average % of processor used by process
+Average % of Memory in use on the VM
+MIxed segments	1.587	3.555	7.077	12.457	6.169	30.5	37
+Transactions/second
+User Load
+10 users
+25
+50
+100
+Average
+MIxed segments	5.168	6.088	6.443	7.209	6.227
+ 
+Fixed user load and fixed number of segments with increasing number of documents in the BCM and a run period of 15 minutes(previous result with predefined number of iterations added for comparison)
+Average Response Time(seconds)
+Number of documents in BCM
+6000(previous result)
+~30 000
+~55 000
+~80 000
+Average
+Average % of processor used by process
+Average % of Memory in use on the VM
+100 segments- 25 users	0.433	1.379	2.312	3.709	1.958	15	37.5
+Transactions/second
+Number of documents in BCM
+6000(previous result)
+~30 000
+~55 000
+~80 000
+Average
+100 segments- 25 users	51.012	17.802	10.692	6.674	21.545
