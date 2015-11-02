@@ -1,0 +1,90 @@
+input {
+#stdin {}
+
+ file {
+    path           => "/var/log/remotelogs/lcqa/bcm_syslog.log"
+    type           => lcqa
+    add_field      => { "env" => "lcqa" }
+ }
+ file {
+    path           => "/var/log/remotelogs/lcui/bcm_syslog.log"
+    type           => lcui
+    add_field      => { "env" => "lcui" }
+ }
+ file {
+    path           => "/var/log/remotelogs/lcci/bcm_syslog.log"
+    type           => lcci
+    add_field      => { "env" => "lcci" }
+ }
+
+}
+
+filter {
+    grok {
+        match => {
+            "message" => "%{SYSLOGTIMESTAMP:syslog_timestamp} %{SYSLOGHOST:host} %{DATA:type} (?<syslog_escape>(#\d{3})?)%{GREEDYDATA:message}"
+        }
+        overwrite => ["host", "type", "message"]
+        remove_field => ["syslog_escape"]
+    }
+
+    multiline {
+        pattern => "^%{TIMESTAMP_ISO8601:api_timestamp} "
+        negate => true
+        what => previous
+        enable_flush => true
+    }
+
+    grok {
+        match => {
+            "message" => "%{TIMESTAMP_ISO8601:api_timestamp} %{LOGLEVEL:loglevel} %{DATA:file}:%{NUMBER:line} -"
+        }
+    }
+
+
+    date {
+       match => ["api_timestamp", "YYYY-MM-dd HH:mm:ss,SSS", "YYYY-MM-dd HH:mm:ss", "ISO8601"]
+       timezone => "UTC"
+       target => "@timestamp"
+       add_tag => ["tmatch"]
+    }
+}
+
+output {
+
+  gelf {
+    host           => "cljeng-lc-log01"
+    port           => 12202
+  }
+
+#  stdout {
+#     codec => "rubydebug"
+#  }
+
+}
+
+
+
+
+
+
+2015-10-16 08:08:13 INFO  WebContext:40 - /bcm/fullDocument - TR_ID : 5d764265-3f0f-4782-a41c-4c3405638088
+
+
+2015-10-16 08:08:13 INFO  StatisticsLogger:26 - addDocument adding document with ID c448fb7c-ecb8-4c02-91e8-857a71aa4c5c took 0.021 seconds.    Trace Id: 5d764265-3f0f-4782-a41c-4c3405638088
+
+
+2015-10-16 08:08:13 INFO  StatisticsLogger:26 - addDocument building response with ID c448fb7c-ecb8-4c02-91e8-857a71aa4c5c took 0.021 seconds.  Trace Id: 5d764265-3f0f-4782-a41c-4c3405638088
+
+
+
+
+
+2015-11-02 16:10:50.491 INFO  WebContext:40 - /bcm/documents - TR_ID : vaFanCulo
+
+2015-11-02 16:11:08.227 INFO  DocumentController:30 - REST Call: addDocument(myText2)
+
+2015-11-02 16:11:48.209 INFO  StatisticsLogger:26 - addDocument storing document with ID myText2 took 3.609 seconds.    Trace Id: vaFanCulo
+
+2015-11-02 16:12:13.291 INFO  StatisticsLogger:26 - addDocument building response for document with ID myText2 took 5.137 seconds.      Trace Id: vaFanCulo
+
