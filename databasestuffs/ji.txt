@@ -58,3 +58,33 @@ date
 { match => ["api_timestamp", "YYYY-MM-dd HH:mm:ss,SSS", "YYYY-MM-dd HH:mm:ss", "ISO8601"] timezone => "UTC" target => "@timestamp" add_tag => ["tmatch"] }
 }
 Central logging machines in configuration management needs to be updated on both master and San Jose branches.
+
+
+
+
+
+
+
+
+
+modificarea cu terminologia, algh lui victor, nu
+Enumerariile sunt modificate cu string in constructor
+verifica outputul jsonului cu ambale jar-uri...
+segment.addTerminologyData - nu mai are documentID ca si parametru
+pe tagul de release, ultimul commit e din iulie - de ce????
+add @since annotation for new classes
+TextFragment , SimpleMarkupDataAlghorithmManipulator, TerminologyProcessor  - sa nu fie public
+getSkeletonDefinition - adauga comment cu null return
+CHECK JSON
+CommentDefinition, CommentSeverity, Definition, SegmentationHint were moved from model package
+DependencyFile,LocSubContent are metaData, dar e ignorata in JSON
+Document - extinde acum BCMCompositeParent si nu BCMCompositeElement, nu mai are rebuildTransientData(), si getChildren
+BCMCompositeElement e generic acum!!!!
+teesteaza cu fisiere luate de pe fiecare masina interna
+json ignore unknown and non_null e pe metadata acum, adica pe toate el
+accept(BCMVisitor visitor) nu mai e in markupData
+constructor Segment(String id)
+test1, test2.. test6.json - din stress test folder
+REMOVED null values from output json - TO CONFLUENCE
+scoate ignore children din text markup, placeho si strTag
+TextMarkup - text - scoate empty by default, lasa si null, scoate non_def children din MDC
