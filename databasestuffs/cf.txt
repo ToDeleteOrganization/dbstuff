@@ -1,0 +1,22 @@
+
+
+BCMS Metrics
+
+
+BCMS sends metrics to the Graphite server for all it's endpoints:
+
+endpoitn list
+
+
+The following metrics are send:
+timed,
+counted,
+exception
+
+The sending is don through a pickle 
+
+The machines on which this is used
+- 1 (used)
+- 2 (after release)
+
+To access the local Graphite server, please click here
