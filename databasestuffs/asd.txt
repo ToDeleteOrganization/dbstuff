@@ -1,0 +1,15 @@
+https://console.aws.amazon.com/elasticbeanstalk - aws console   (de aici poti creea aplicatii!!!!!!!!)
+https://eu-central-1.console.aws.amazon.com/elasticbeanstalk/home - EB home
+
+IAM users    -   Services ->  IAM
+
+
+
+
+**** Elastic Beanstalk *****
+You simply upload your application, and Elastic Beanstalk automatically handles the details of capacity provisioning, load balancing, scaling, and application health monitoring. Elastic Beanstalk uses highly reliable and scalable services that are available in the AWS Free Usage Tier such as:
+
+
+
+
+http://docs.aws.amazon.com/gettingstarted/latest/deploy/overview.html - TUTORIAL
