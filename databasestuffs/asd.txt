@@ -13,3 +13,21 @@ You simply upload your application, and Elastic Beanstalk automatically handles 
 
 
 http://docs.aws.amazon.com/gettingstarted/latest/deploy/overview.html - TUTORIAL
+
+
+try to keep focused on 
+EC2,  ----
+ELB,   (ElasticLoadBalancer) ---- 
+S3,  -----
+Elastic Beanstalk,  ----- 
+ElasticCache  
+
+*** tools 
+Cloudformation, 
+Cloudtrail, 
+Quicksight
+
+
+
+
+including CloudFormation, Elastic MapReduce, Route53, Elastic Beanstalk, Elastic Load Balancing, and more -- and how they can be leveraged to enhance your MongoDB experience.
