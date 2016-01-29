@@ -1,0 +1,356 @@
+<p>This are some exceptions that we encountered in the production environment as well as in the different testing scenarios that we did (in the PTE environment).</p>
+<p> </p>
+<ul style="list-style-type: square;">
+  <li>
+    <strong>
+      <a href="http://java.net" style="line-height: 1.42857;">java.net</a>.SocketTimeoutException: Read timed out</strong> - This was heavily received in production</li>
+</ul>
+<p style="margin-left: 60.0px;">
+  <strong>Causes:</strong> When a request is made, that contains a body (http POST or PUT), after a connection between the client and the server is established, the client sends the request body to the server, and the server tries to read that body. If the server doesn't receive any answer, when it tries to read the request, in a certain amount of time, this error will be thrown.</p>
+<p style="margin-left: 60.0px;">
+  <strong>Solution:</strong> We should increase the upload timeout in the tomcat connector so that it will wait longer for the data send by the client. This can be achieved by adding <em>disableUploadTimeout</em>="false" <em>connectionUploadTimeout</em>="300000" parameters, in <em>tomcat/conf/server.xml</em> inside the <em>&lt;Connector /&gt;</em> tag.</p>
+<p style="margin-left: 60.0px;">
+  <strong>Performed tests.</strong>
+</p>
+<p style="margin-left: 60.0px;">All tests were performed in the PTE environment.</p>
+<table>
+  <tbody>
+    <tr>
+      <th>Tomcat connector timeout</th>
+      <th>
+        <p>Concurrent Users/</p>
+        <p>iterations</p>
+      </th>
+      <th>Load</th>
+      <th>Errors</th>
+      <th colspan="1">Observations</th>
+    </tr>
+    <tr>
+      <td rowspan="2">100 milliseconds</td>
+      <td>25 users / 5 iterations</td>
+      <td>
+        <p>329 K on POST (add doc.)</p>
+        <p>4.3 MB on PUT (update doc.)</p>
+      </td>
+      <td>
+        <ol>
+          <li>
+            <span>125</span>/<span>125</span>
+          </li>
+          <li>
+            <span>125</span>/<span>125</span>
+          </li>
+          <li>
+            <span>125</span>/<span>125</span>
+          </li>
+        </ol>
+      </td>
+      <td rowspan="2">
+        <p>The test was made three times with each scenario.</p>
+        <p>The frequency of <span>exceptions </span>were reduced by the load of the request.</p>
+        <p> </p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="1">25 users/ 5 iterations</td>
+      <td colspan="1">
+        <p>49K on POST (add doc.)</p>
+        <p>69K on PUT (update doc.)</p>
+      </td>
+      <td colspan="1">
+        <ol>
+          <li>90/125</li>
+          <li>93/125</li>
+          <li>88/125</li>
+        </ol>
+      </td>
+    </tr>
+    <tr>
+      <td rowspan="4">
+        <span>1000 milliseconds</span>
+        <br/>
+        <br/>
+        <br/>
+      </td>
+      <td>
+        <span>25 users/ 5 iterations</span>
+      </td>
+      <td>
+        <p>49K on POST (add doc.)</p>
+        <p>69K on PUT (update doc.)</p>
+      </td>
+      <td>
+        <ol>
+          <li>0/125</li>
+          <li>0/<span>125</span>
+          </li>
+          <li>0/<span>125</span>
+          </li>
+        </ol>
+      </td>
+      <td rowspan="4">
+        <p>
+          <span>The test was made three times with each scenario.</span>
+        </p>
+        <p>By increasing the timeout the <span>exceptions disappeared.</span>
+        </p>
+        <p>
+          <span>By increasing the number of concurrent users the exceptions reappeared.<br/>
+          </span>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="1"> </td>
+      <td colspan="1">
+        <p>49K on POST (add doc.)</p>
+        <p>858K on PUT (update doc.)</p>
+      </td>
+      <td colspan="1">
+        <ol>
+          <li>0/125</li>
+          <li>0/125</li>
+          <li>0/125</li>
+        </ol>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="1"> </td>
+      <td colspan="1">
+        <p>329K on POST (add doc.)</p>
+        <p>4.3MB on PUT (update doc.)</p>
+      </td>
+      <td colspan="1">
+        <ol>
+          <li>0/125</li>
+          <li>0/125</li>
+          <li>0/125</li>
+        </ol>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="1">50 users / 5 iterations</td>
+      <td colspan="1">
+        <p>329K on POST (add doc.)</p>
+        <p>4.3MB on PUT (update doc.)</p>
+      </td>
+      <td colspan="1">
+        <ol>
+          <li>5/250</li>
+          <li>9/250</li>
+          <li>9/250</li>
+        </ol>
+      </td>
+    </tr>
+    <tr>
+      <td rowspan="3">30000 <span>milliseconds (30 sec)</span>
+      </td>
+      <td colspan="1">
+        <span>25 users/ 5 iterations</span>
+      </td>
+      <td colspan="1">
+        <p>329K on POST (add doc.)</p>
+        <p>858K on PUT (update doc.)</p>
+      </td>
+      <td colspan="1">
+        <ol>
+          <li>0/125</li>
+          <li>0/125</li>
+          <li>0/125</li>
+        </ol>
+      </td>
+      <td colspan="1"> </td>
+    </tr>
+    <tr>
+      <td colspan="1"> </td>
+      <td colspan="1">
+        <p>329K on POST (add doc.)</p>
+        <p>4.4MB on PUT (update doc.)</p>
+      </td>
+      <td colspan="1">
+        <ol>
+          <li>0/125</li>
+          <li>0/125</li>
+          <li>0/125</li>
+        </ol>
+      </td>
+      <td colspan="1"> </td>
+    </tr>
+    <tr>
+      <td colspan="1"> </td>
+      <td colspan="1">
+        <p>4.4K on POST (add doc.)</p>
+        <p>13.3MB on PUT (update doc.)</p>
+      </td>
+      <td colspan="1">
+        <ol>
+          <li>0/125</li>
+          <li>0/125</li>
+          <li>0/125</li>
+        </ol>
+      </td>
+      <td colspan="1"> </td>
+    </tr>
+    <tr>
+      <td colspan="1">
+        <span>60000 </span>
+        <span>milliseconds (1 min)</span>
+      </td>
+      <td colspan="1"> </td>
+      <td colspan="1"> </td>
+      <td colspan="1"> </td>
+      <td colspan="1"> </td>
+    </tr>
+    <tr>
+      <td colspan="1">120000 <span>milliseconds (2 min)</span>
+      </td>
+      <td colspan="1"> </td>
+      <td colspan="1"> </td>
+      <td colspan="1"> </td>
+      <td colspan="1"> </td>
+    </tr>
+    <tr>
+      <td rowspan="5">300000 <span>milliseconds </span>m (5 min)</td>
+      <td colspan="1">
+        <span>25 users/ 5 iterations</span>
+      </td>
+      <td colspan="1">
+        <p>329K on POST (add doc.)</p>
+        <p>858K on PUT (update doc.)</p>
+      </td>
+      <td colspan="1">
+        <ol>
+          <li>0/125</li>
+          <li>0/125</li>
+          <li>0/125</li>
+        </ol>
+      </td>
+      <td colspan="1"> </td>
+    </tr>
+    <tr>
+      <td colspan="1">
+        <span>100 users/ 10 iterations</span>
+      </td>
+      <td colspan="1">
+        <p>329K on POST (add doc.)</p>
+        <p>858K on PUT (update doc.)</p>
+      </td>
+      <td colspan="1">
+        <ol>
+          <li>0/1000</li>
+          <li>0/<span>1000</span>
+          </li>
+          <li>0/<span>1000</span>
+          </li>
+        </ol>
+      </td>
+      <td colspan="1"> </td>
+    </tr>
+    <tr>
+      <td colspan="1">
+        <span>100 users/ 5 iterations</span>
+      </td>
+      <td colspan="1">
+        <p>2.2MB on POST (add doc.)</p>
+        <p>4.4MB on PUT (update doc.)</p>
+      </td>
+      <td colspan="1">
+        <ol>
+          <li>0/500</li>
+          <li>0/500</li>
+          <li>0/500</li>
+        </ol>
+      </td>
+      <td colspan="1"> </td>
+    </tr>
+    <tr>
+      <td colspan="1">100 users / 5 iterations</td>
+      <td colspan="1">
+        <p>
+          <span>13.4MB <span>on POST (add doc.)</span>
+          </span>
+        </p>
+        <p>
+          <span>47MB <span>on PUT (update doc.)</span>
+          </span>
+        </p>
+      </td>
+      <td colspan="1">
+        <ol>
+          <li>
+            <span>0/500</span>
+          </li>
+          <li>
+            <span>0/500 </span>
+          </li>
+          <li>
+            <span>0/500</span>
+          </li>
+        </ol>
+      </td>
+      <td colspan="1"> </td>
+    </tr>
+    <tr>
+      <td colspan="1">500 users / 10 <span>iterations</span>
+      </td>
+      <td colspan="1">
+        <p>329K on POST (add doc.)</p>
+        <p>858K on PUT (update doc.)</p>
+      </td>
+      <td colspan="1">
+        <ol>
+          <li>0/5<span>000</span>
+          </li>
+          <li>0/5<span>000</span>
+          </li>
+          <li>0/5<span>000</span>
+          </li>
+        </ol>
+      </td>
+      <td colspan="1"> </td>
+    </tr>
+    <tr>
+      <td colspan="1"> </td>
+      <td colspan="1">
+        <span>500 users / 10 </span>
+        <span>iterations</span>
+      </td>
+      <td colspan="1">
+        <p>2.2MB on POST (add doc.)</p>
+        <p>858K on PUT (update doc.)</p>
+      </td>
+      <td colspan="1">
+        <ol>
+          <li>0/5000</li>
+          <li>0/5000</li>
+          <li>0/5000</li>
+        </ol>
+      </td>
+      <td colspan="1"> </td>
+    </tr>
+  </tbody>
+</table>
+<p> </p>
+<p style="margin-left: 90.0px;"> </p>
+<p style="margin-left: 30.0px;"> </p>
+<ul>
+  <li> <strong>com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message</strong> - appeared in production as well.</li>
+</ul>
+<p style="margin-left: 60.0px;">As the the exception suggest, the read timeout, in which BCMS waits for a response from mongo, has elapsed. In order to avoid this problem we should increase 'mongo.socketTimeout' property in mongo configuration file.</p>
+<ul>
+  <li>
+    <strong>com.mongodb.MongoSocketOpenException: Exception opening socket</strong> - appeared in production as well.</li>
+</ul>
+<p style="margin-left: 60.0px;">This is caused due to a connection error in the given amount of time (mongod server is down or the connection is to slow), bassically a timeout conneciton problem. This can be fixed by increasing the 'mongo.connectTimeout' value in the mongo configuration file.</p>
+<ul>
+  <li> <strong>com.mongodb.MongoTimeoutException: Timeout waiting for a pooled item after 10000 MILLISECONDS</strong>
+  </li>
+</ul>
+<p style="margin-left: 60.0px;">When a thread requires a connection, they ar put in a wait period (before receiving the actual connection). If that period is expired this exception will be raised. This can be fixed in by increased the amount of time of that wait period by increasing 'mongo.maxWaitTime' value in the configuration file.</p>
+<ul>
+  <li> <strong>
+      <a href="http://java.net">java.net</a>.SocketException: Connection reset </strong>
+  </li>
+</ul>
+<p style="margin-left: 60.0px;">We could reproduce this when the connection was interrupted by the client (possible due to a timeout on the client side).</p>
+<p> </p>
