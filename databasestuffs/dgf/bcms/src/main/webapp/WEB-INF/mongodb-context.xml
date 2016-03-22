@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+     	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.7.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <context:property-placeholder ignore-unresolvable="true"  location="file:${catalina.base}/conf/bcms/storage-mongo.properties"/>
+
+    <mongo:mongo-client id="replicaSetMongo"
+                        replica-set="${bcm.mongodb.replica.set}">
+        <mongo:client-options
+                write-concern="${bcm.mongodb.write.concern}"
+                connections-per-host="${mongo.connectionsPerHost}"
+                threads-allowed-to-block-for-connection-multiplier="${mongo.threadsAllowedToBlockForConnectionMultiplier}"
+                connect-timeout="${mongo.connectTimeout}"
+                max-wait-time="${mongo.maxWaitTime}"
+                socket-keep-alive="${mongo.socketKeepAlive}"
+                socket-timeout="${mongo.socketTimeout}"
+                />
+    </mongo:mongo-client>
+
+    <!--<mongo:db-factory id="mongoDbFactory"-->
+                      <!--host="${mongo.single.host}"-->
+                      <!--port="${mongo.single.port}"-->
+                      <!--dbname="${bcm.mongodb.database}"/>-->
+
+    <mongo:db-factory id="mongoDbFactory"
+                      mongo-ref="replicaSetMongo"
+                      dbname="${bcm.mongodb.database}"/>
+
+    <mongo:mapping-converter id="converter"/>
+
+    <bean name="gridFsTemplate"
+          class="com.sdl.bcm.service.storage.gridfs.BCMGridFsTemplate">
+        <constructor-arg ref="mongoDbFactory"/>
+        <constructor-arg ref="converter"/>
+    </bean>
+</beans>

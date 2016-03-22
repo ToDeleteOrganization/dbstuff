@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Application context definition for Spring JDBC Introduction. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:metrics="http://www.ryantenney.com/schema/metrics" 
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+		   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+		   http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+		   http://www.ryantenney.com/schema/metrics
+		   http://www.ryantenney.com/schema/metrics/metrics-3.0.xsd
+           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+           http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
+
+    <context:property-placeholder ignore-unresolvable="true" location="file:${catalina.base}/conf/bcms/bcm-storage-service-config.properties"/>
+
+    <mvc:annotation-driven/>
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <context:component-scan base-package="com.sdl.bcm.*"/>
+
+	<metrics:annotation-driven metric-registry="bcmMetricRegistry" />
+
+    <import resource="mongodb-context.xml"/>
+    <import resource="dropwizard-metrics-context.xml"/>
+
+</beans>

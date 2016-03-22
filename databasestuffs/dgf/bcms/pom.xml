@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.sdl.bcm</groupId>
+	<artifactId>bcm-storage-service</artifactId>
+	<packaging>war</packaging>
+	<version>2.5.5-SNAPSHOT</version>
+	<name>bcm-storage-service</name>
+
+	<properties>
+		<spring.version>4.1.6.RELEASE</spring.version>
+		<aspectj.version>1.8.5</aspectj.version>
+		<slf4j.version>1.7.1</slf4j.version>
+		<cglib.version>2.2.2</cglib.version>
+		<jackson.version>2.5.3</jackson.version>
+		<junit.version>4.9</junit.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven-compiler-plugin.version>2.5.1</maven-compiler-plugin.version>
+		<maven-surefire-plugin.version>2.12.2</maven-surefire-plugin.version>
+		<bcm.version>2.5.4-SNAPSHOT</bcm.version>
+		<metrics.version>3.1.2</metrics.version>
+	</properties>
+
+	<scm>
+		<developerConnection>scm:git:git@clujgit02:sdl-platform/bcm-service.git
+		</developerConnection>
+		<connection>scm:git:git@clujgit02:sdl-platform/bcm-service.git
+		</connection>
+		<url>http://clujgit02/sdl-platform/bcm-service</url>
+	</scm>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>install</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.2</version>
+				<executions>
+					<execution>
+						<id>make-a-jar</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.4.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.1</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>1.8.1</version>
+				<configuration>
+					<tag>${project.artifactId}-${project.version}</tag>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12.4</version>
+				<configuration>
+					<!--<argLine>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005</argLine> -->
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>5.1</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.4.201502262128</version>
+
+				<executions>
+					<execution>
+						<id>default-prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>default-report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>default-check</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<rule>
+									<element>BUNDLE</element>
+									<limits>
+										<limit>
+											<counter>COMPLEXITY</counter>
+											<value>COVEREDRATIO</value>
+											<!-- TODO: add a greater value than 0.00 -->
+											<minimum>0.00</minimum>
+										</limit>
+									</limits>
+								</rule>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources/config</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<name>internal releases</name>
+			<url>http://cljeng-nexus02:8081/nexus/content/repositories/releases
+			</url>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>snapshots</id>
+			<name>internal snapshots</name>
+			<url>http://cljeng-nexus02:8081/nexus/content/repositories/snapshots
+			</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>1.7.2.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<!-- BCM Java dependencies -->
+		<dependency>
+			<groupId>com.sdl.bcm</groupId>
+			<artifactId>bcm-model</artifactId>
+			<version>${bcm.version}</version>
+			<exclusions></exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sdl.bcm</groupId>
+			<artifactId>bcm-common</artifactId>
+			<version>${bcm.version}</version>
+			<exclusions></exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sdl.bcm</groupId>
+			<artifactId>bcm-api</artifactId>
+			<version>${bcm.version}</version>
+			<exclusions>
+
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-web</artifactId>
+				</exclusion>
+
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-webmvc</artifactId>
+				</exclusion>
+
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-aop</artifactId>
+				</exclusion>
+
+				<exclusion>
+					<groupId>org.mongodb</groupId>
+					<artifactId>mongo-java-driver</artifactId>
+				</exclusion>
+
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.thetransactioncompany</groupId>
+			<artifactId>cors-filter</artifactId>
+			<version>2.4</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-commons</artifactId>
+			<version>1.10.0.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjtools</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- Metrics dependencies -->
+		<dependency>
+			<groupId>com.ryantenney.metrics</groupId>
+			<artifactId>metrics-spring</artifactId>
+			<version>3.1.2</version>
+		</dependency>
+
+
+		<!--needed in order to report to graphite -->
+		<dependency>
+			<groupId>io.dropwizard.metrics</groupId>
+			<artifactId>metrics-graphite</artifactId>
+			<version>${metrics.version}</version>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>ci</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!-- Run application in the CI env using these configs -->
+				<bcm.host>http://clj-bcmci03:8080</bcm.host>
+				<bcm.app.prefix>bcms</bcm.app.prefix>
+				<statistics.path>./</statistics.path>
+				<!--MONGO DB -->
+				<!-- MongoDb Replica Set settings -->
+				<bcm.mongodb.replica.set>clj-lc-mongo01:27017,clj-lc-mongo02:27017,clj-lc-mongo03:27017</bcm.mongodb.replica.set>
+				<bcm.mongodb.write.concern>REPLICA_ACKNOWLEDGED</bcm.mongodb.write.concern>
+				<mongo.threadsAllowedToBlockForConnectionMultiplier>50</mongo.threadsAllowedToBlockForConnectionMultiplier>
+				<mongo.connectTimeout>10000</mongo.connectTimeout>
+				<mongo.maxWaitTime>10000</mongo.maxWaitTime>
+				<mongo.autoConnectRetry>true</mongo.autoConnectRetry>
+				<mongo.socketKeepAlive>true</mongo.socketKeepAlive>
+				<mongo.socketTimeout>60000</mongo.socketTimeout>
+				<mongo.slaveOk>false</mongo.slaveOk>
+				<!-- General settings -->
+				<bcm.mongodb.database>bcm-ci-env</bcm.mongodb.database>
+
+				<!-- RPM Build properties -->
+				<app.home>/local/gateway/apache-tomcat/</app.home>
+				<app.webapps>${app.home}/webapps/</app.webapps>
+				<conf.bcms>${app.home}/webapp/</conf.bcms>
+			</properties>
+
+
+			<!-- Can't this be pulled out of the CI profile -->
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>rpm-maven-plugin</artifactId>
+						<version>2.1.4</version>
+						<executions>
+							<execution>
+								<id>generate-rpm</id>
+								<phase>package</phase>
+								<goals>
+									<goal>rpm</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<group>BCM Storage Service</group>
+							<description>Maven Recipe: RPM Package.</description>
+							<mappings>
+								<mapping>
+									<directory>${app.webapps}</directory>
+									<sources>
+										<source>
+											<location>
+												${project.basedir}/target/bcm-storage-service-${project.version}.war
+											</location>
+											<destination>bcms.war</destination>
+										</source>
+									</sources>
+								</mapping>
+							</mappings>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>Dan</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!-- Run application in the CI env using these configs -->
+				<bcm.host>http://localhost:8080</bcm.host>
+				<bcm.app.prefix>bcms</bcm.app.prefix>
+				<statistics.path>./</statistics.path>
+				<!--MONGO DB -->
+				<!-- Single host settings -->
+				<mongo.host>localhost</mongo.host>
+				<mongo.port>27017</mongo.port>
+
+				<!-- MongoDb Replica Set settings -->
+				<bcm.mongodb.replica.set>clj-lc-mongo01:27017,clj-lc-mongo02:27017,clj-lc-mongo03:27017</bcm.mongodb.replica.set>
+				<bcm.mongodb.write.concern>REPLICA_ACKNOWLEDGED</bcm.mongodb.write.concern>
+				<mongo.threadsAllowedToBlockForConnectionMultiplier>50</mongo.threadsAllowedToBlockForConnectionMultiplier>
+				<mongo.connectTimeout>10000</mongo.connectTimeout>
+				<mongo.maxWaitTime>10000</mongo.maxWaitTime>
+				<mongo.autoConnectRetry>true</mongo.autoConnectRetry>
+				<mongo.socketKeepAlive>true</mongo.socketKeepAlive>
+				<mongo.socketTimeout>60000</mongo.socketTimeout>
+				<mongo.slaveOk>false</mongo.slaveOk>
+
+				<!-- General settings -->
+				<bcm.mongodb.database>bcm-dev-dan</bcm.mongodb.database>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>victor</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!-- Run application in the CI env using these configs -->
+				<bcm.host>http://localhost:8080</bcm.host>
+				<bcm.app.prefix>bcms</bcm.app.prefix>
+				<statistics.path>./</statistics.path>
+				<!--MONGO DB -->
+				<!-- MongoDb Replica Set settings -->
+				<bcm.mongodb.replica.set>clj-lc-mongo01:27017,clj-lc-mongo02:27017,clj-lc-mongo03:27017</bcm.mongodb.replica.set>
+				<bcm.mongodb.write.concern>REPLICA_ACKNOWLEDGED</bcm.mongodb.write.concern>
+				<mongo.threadsAllowedToBlockForConnectionMultiplier>50</mongo.threadsAllowedToBlockForConnectionMultiplier>
+				<mongo.connectTimeout>10000</mongo.connectTimeout>
+				<mongo.maxWaitTime>10000</mongo.maxWaitTime>
+				<mongo.autoConnectRetry>true</mongo.autoConnectRetry>
+				<mongo.socketKeepAlive>true</mongo.socketKeepAlive>
+				<mongo.socketTimeout>60000</mongo.socketTimeout>
+				<mongo.slaveOk>false</mongo.slaveOk>
+
+				<!-- General settings -->
+				<bcm.mongodb.database>bcm-dev-victor</bcm.mongodb.database>
+
+				<!-- SONAR settings -->
+				<sonar.language>java</sonar.language>
+				<sonar.profile>LC Way</sonar.profile>
+
+				<!-- Example for MySQL -->
+				<sonar.jdbc.url>
+					<!--jdbc:mysql://localhost:3306/sonar?useUnicode=true&amp;characterEncoding=utf8&amp;rewriteBatchedStatements=true&amp;useConfigs=maxPerformance -->
+					jdbc:mysql://cljeng-sonar02:3306/sonar?useUnicode=true&amp;characterEncoding=utf8&amp;rewriteBatchedStatements=true&amp;useConfigs=maxPerformance
+				</sonar.jdbc.url>
+				<sonar.jdbc.username>sonar</sonar.jdbc.username>
+				<sonar.jdbc.password>sonar</sonar.jdbc.password>
+
+				<!-- Optional URL to server. Default value is http://localhost:9000 -->
+				<sonar.host.url>
+					http://cljeng-sonar02:9000/
+				</sonar.host.url>
+
+			</properties>
+		</profile>
+		<profile>
+			<id>ingo</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!-- Run application in the CI env using these configs -->
+				<bcm.host>http://localhost:8080</bcm.host>
+				<bcm.app.prefix>bcms</bcm.app.prefix>
+				<statistics.path>./</statistics.path>
+				<!--MONGO DB -->
+				<!-- Single host settings -->
+				<mongo.host>localhost</mongo.host>
+				<mongo.port>27017</mongo.port>
+				<!-- General settings -->
+				<bcm.mongodb.database>bcm-dev-ingo</bcm.mongodb.database>
+			</properties>
+		</profile>
+	</profiles>
+
+</project>
