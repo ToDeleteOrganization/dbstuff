@@ -5,7 +5,9 @@
 	<artifactId>bcm-java-api</artifactId>
 	<packaging>pom</packaging>
 	<version>2.5.4-SNAPSHOT</version>
-<!-- Learn tags from this .pom -->
+
+	<!-- Learn tags from this .pom -->
+
 	<properties>
 		<spring.version>4.1.6.RELEASE</spring.version>
 		<aspectj.version>1.8.5</aspectj.version>
